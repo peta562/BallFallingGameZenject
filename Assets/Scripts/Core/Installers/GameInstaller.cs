@@ -1,4 +1,6 @@
 ﻿using Core.Services.ConfigProvider;
+using Core.Services.SaveDataHandler;
+using Core.Services.SaveLoadService;
 using Core.StateMachine;
 using UnityEngine;
 using Zenject;
@@ -14,6 +16,9 @@ namespace Core.Installers {
             BindSceneLoader();
 
             BindConfigProvider();
+
+            BindSaveDataHandler();
+            BindSaveLoadService();
 
             BindGameStateMachine();
         }
@@ -41,6 +46,18 @@ namespace Core.Installers {
         void BindConfigProvider() {
             Container
                 .BindInterfacesAndSelfTo<ConfigProvider>()
+                .AsSingle();
+        }
+
+        void BindSaveDataHandler() {
+            Container
+                .BindInterfacesAndSelfTo<SaveDataHandler>()
+                .AsSingle();
+        }
+
+        void BindSaveLoadService() {
+            Container
+                .BindInterfacesAndSelfTo<JsonPrefsSaveLoadService>()
                 .AsSingle();
         }
 
