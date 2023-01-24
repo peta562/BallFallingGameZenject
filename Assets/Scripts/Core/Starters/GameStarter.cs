@@ -1,10 +1,9 @@
-﻿using System;
-using Core.StateMachine;
+﻿using Core.StateMachine;
 using Core.StateMachine.States;
 using UnityEngine;
 using Zenject;
 
-namespace Core {
+namespace Core.Starters {
     public sealed class GameStarter : MonoBehaviour {
         GameStateMachine _gameStateMachine;
 

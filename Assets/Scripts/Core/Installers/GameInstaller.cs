@@ -6,7 +6,7 @@ using UnityEngine;
 using Zenject;
 
 namespace Core.Installers {
-    public sealed class GameInstaller: MonoInstaller {
+    public sealed class GameInstaller : MonoInstaller {
         [SerializeField] CoroutineRunner CoroutineRunnerPrefab;
         [SerializeField] LoadingScreen LoadingScreenPrefab;
 
@@ -62,7 +62,8 @@ namespace Core.Installers {
         }
 
         void BindGameStateMachine() {
-            Container.Bind<GameStateMachine>()
+            Container
+                .Bind<GameStateMachine>()
                 .FromSubContainerResolve()
                 .ByInstaller<GameStateMachineInstaller>()
                 .AsSingle();

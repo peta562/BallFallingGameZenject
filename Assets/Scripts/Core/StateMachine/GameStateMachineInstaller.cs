@@ -1,9 +1,8 @@
-﻿using Core.StateMachine;
-using Core.StateMachine.States;
+﻿using Core.StateMachine.States;
 using UnityEngine;
 using Zenject;
 
-namespace Core.Installers {
+namespace Core.StateMachine {
     public sealed class GameStateMachineInstaller : Installer<GameStateMachineInstaller> {
         public override void InstallBindings()
         {

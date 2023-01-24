@@ -106,6 +106,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d1fd7b8668749a3918cbdd71c7388c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GameStarterPrefab: {fileID: 1998336337629166464, guid: 8f744dfb4cd214048ac044fe3ebfe71a, type: 3}
   CoroutineRunnerPrefab: {fileID: 6762695779732855383, guid: 62032ff95bc5a86438ca57ff10207173, type: 3}
   LoadingScreenPrefab: {fileID: 4923940038786245160, guid: 5e88122171523eb4da6c5f2967d1425d, type: 3}
