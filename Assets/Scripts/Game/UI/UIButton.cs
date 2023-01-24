@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
 
 namespace Game.UI {
     [RequireComponent(typeof(Button))]
@@ -9,7 +8,7 @@ namespace Game.UI {
         Button _button;
         Action _action;
 
-        void Start() {
+        void Awake() {
             _button = GetComponent<Button>();
         }
 

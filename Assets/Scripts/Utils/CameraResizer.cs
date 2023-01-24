@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Scripts.Utils {
+namespace Utils {
     public sealed class CameraResizer : MonoBehaviour {
         [SerializeField] Vector2 DefaultResolution = new Vector2(1200, 1600);
 

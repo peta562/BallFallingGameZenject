@@ -1,9 +1,9 @@
-﻿using Game.UI.MainMenu;
-using UnityEngine;
+﻿using System;
+using Game.UI.MainMenu;
 using Zenject;
 
-namespace Core.Starters {
-    public sealed class MainMenuStarter : MonoBehaviour {
+namespace Game.MainMenu {
+    public sealed class MainMenuManager : IInitializable, IDisposable {
         MainMenuUI _mainMenuUI;
 
         [Inject]
@@ -11,11 +11,11 @@ namespace Core.Starters {
             _mainMenuUI = mainMenuUI;
         }
 
-        void Start() {
+        public void Initialize() {
             _mainMenuUI.Init();
         }
 
-        void OnDestroy() {
+        public void Dispose() {
             _mainMenuUI.DeInit();
         }
     }
