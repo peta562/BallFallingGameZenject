@@ -10,11 +10,11 @@ namespace Core.Installers {
         [SerializeField] Transform BallRoot;
         
         public override void InstallBindings() {
+            BindScreenBordersProvider();
+            
             BindLevelManager();
             BindHUD();
 
-            BindScreenBordersProvider();
-            
             BindBallsController();
             BindBallsSpawner();
             BindBallFactory();
