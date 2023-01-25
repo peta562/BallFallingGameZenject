@@ -1,6 +1,8 @@
-﻿using Core.Services.ConfigProvider;
+﻿using System;
+using Core.Services.ConfigProvider;
 using Core.Services.SaveDataHandler;
 using Core.Services.SaveLoadService;
+using Core.Services.TimerProvider;
 using Core.StateMachine;
 using UnityEngine;
 using Zenject;
@@ -19,6 +21,9 @@ namespace Core.Installers {
 
             BindSaveDataHandler();
             BindSaveLoadService();
+
+            BindTimerProvider();
+            BindTimerFactory();
 
             BindGameStateMachine();
         }
@@ -59,6 +64,17 @@ namespace Core.Installers {
             Container
                 .BindInterfacesAndSelfTo<JsonPrefsSaveLoadService>()
                 .AsSingle();
+        }
+
+        void BindTimerProvider() {
+            Container
+                .BindInterfacesAndSelfTo<TimerProvider>()
+                .AsSingle();
+        }
+
+        void BindTimerFactory() {
+            Container
+                .BindFactory<float, Action, Action<int>, bool, Timer, Timer.Factory>();
         }
 
         void BindGameStateMachine() {

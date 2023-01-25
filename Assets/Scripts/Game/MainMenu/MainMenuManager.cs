@@ -4,10 +4,9 @@ using Zenject;
 
 namespace Game.MainMenu {
     public sealed class MainMenuManager : IInitializable, IDisposable {
-        MainMenuUI _mainMenuUI;
-
-        [Inject]
-        public void Construct(MainMenuUI mainMenuUI) {
+        readonly MainMenuUI _mainMenuUI;
+        
+        public MainMenuManager(MainMenuUI mainMenuUI) {
             _mainMenuUI = mainMenuUI;
         }
 
