@@ -1,7 +1,6 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Core {
-    public sealed class CoroutineRunner : MonoBehaviour {
+    public sealed class CoroutineRunner : MonoBehaviour, ICoroutineRunner {
     }
 }

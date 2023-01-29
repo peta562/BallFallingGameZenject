@@ -5,15 +5,16 @@ using Zenject;
 
 namespace Core.Services.TimerProvider {
     public sealed class Timer {
-        readonly CoroutineRunner _coroutineRunner;
+        readonly ICoroutineRunner _coroutineRunner;
         readonly float _time;
         readonly Action _onTimerEnd;
         readonly Action<int> _onTimerChange;
         readonly bool _repeat;
         
         float _timer;
+        Coroutine _timeCoroutine;
 
-        public Timer(CoroutineRunner coroutineRunner, float time, Action onTimerEnd, Action<int> onTimerChange = null,
+        public Timer(ICoroutineRunner coroutineRunner, float time, Action onTimerEnd, Action<int> onTimerChange = null,
             bool repeat = false) {
             _coroutineRunner = coroutineRunner;
             _time = time;
@@ -24,12 +25,11 @@ namespace Core.Services.TimerProvider {
         
         public void StartTimer() {
             _timer = _time;
-            _coroutineRunner.StartCoroutine(Start());
+            _timeCoroutine = _coroutineRunner.StartCoroutine(Start());
         }
 
         public void StopTimer() {
-            _coroutineRunner.StopCoroutine(Start());
-            _onTimerEnd?.Invoke();
+            _coroutineRunner.StopCoroutine(_timeCoroutine);
         }
 
         IEnumerator Start() {

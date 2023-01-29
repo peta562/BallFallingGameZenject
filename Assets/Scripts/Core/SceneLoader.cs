@@ -5,11 +5,11 @@ using Zenject;
 
 namespace Core {
     public sealed class SceneLoader {
-        readonly CoroutineRunner _coroutineRunner;
+        readonly ICoroutineRunner _coroutineRunner;
 
         public SceneName CurrentSceneName { get; private set; }
         
-        public SceneLoader(CoroutineRunner coroutineRunner) {
+        public SceneLoader(ICoroutineRunner coroutineRunner) {
             _coroutineRunner = coroutineRunner;
         }
 

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8971c18045c34c9a93c310a20d38650a, type: 3}
   m_Name: BallConfig
   m_EditorClassIdentifier: 
-  Speed: 5
   Scale: 1
+  Sprite: {fileID: -2413806693520163455, guid: 155f4c3a0200cfc4ea21e53fe61771a6, type: 3}

@@ -30,7 +30,7 @@ namespace Core.Installers {
 
         void BindCoroutineRunner() {
             Container
-                .Bind<CoroutineRunner>()
+                .BindInterfacesTo<CoroutineRunner>()
                 .FromComponentInNewPrefab(CoroutineRunnerPrefab)
                 .AsSingle();
         }

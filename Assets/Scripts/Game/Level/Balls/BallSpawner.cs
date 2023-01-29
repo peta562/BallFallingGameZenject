@@ -2,21 +2,25 @@
 using Core.Services.ConfigProvider;
 using UnityEngine;
 
-namespace Game.Level {
-    public sealed class BallsSpawner {
-        readonly BallConfig _ballConfig;
+namespace Game.Level.Balls {
+    public sealed class BallSpawner {
         readonly Ball.Factory _ballFactory;
+        readonly BallConfig _ballConfig;
 
-        public BallsSpawner(IConfigProvider configProvider, Ball.Factory ballFactory) {
-            _ballConfig = configProvider.GetBallConfig();
+        public BallSpawner(Ball.Factory ballFactory, IConfigProvider configProvider) {
             _ballFactory = ballFactory;
+            _ballConfig = configProvider.GetBallConfig();
         }
 
-        public Ball SpawnBall(Vector2 screenBorders) {
+        public Ball Create(Vector2 screenBorders) {
             var ballScale = _ballConfig.Scale;
             var spawnPosition = CalculateSpawnPosition(screenBorders, ballScale);
 
-            return _ballFactory.Create(_ballConfig.Speed, spawnPosition);
+            var ball = _ballFactory.Create(_ballConfig.Health, spawnPosition, ballScale,
+                _ballConfig.Sprite, Color.red);
+            ball.SetView();
+
+            return ball;
         }
 
         Vector2 CalculateSpawnPosition(Vector2 screenBorders, float ballScale) {

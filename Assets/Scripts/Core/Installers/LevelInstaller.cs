@@ -1,5 +1,6 @@
 ﻿using Core.Services.Factories;
 using Game.Level;
+using Game.Level.Balls;
 using Game.UI.Level;
 using UnityEngine;
 using Zenject;
@@ -15,9 +16,9 @@ namespace Core.Installers {
             BindLevelManager();
             BindHUD();
 
-            BindBallsController();
-            BindBallsSpawner();
+            BindBallSpawner();
             BindBallFactory();
+            BindBallsController();
         }
 
         void BindLevelManager() {
@@ -34,29 +35,32 @@ namespace Core.Installers {
                 .AsSingle();
         }
 
-        void BindBallsController() {
-            Container
-                .Bind<BallsController>()
-                .AsSingle();
-        }
-
         void BindScreenBordersProvider() {
             Container
                 .BindInterfacesAndSelfTo<ScreenBordersProvider>()
                 .AsSingle();
         }
 
-        void BindBallsSpawner() {
+        void BindBallSpawner() {
             Container
-                .Bind<BallsSpawner>()
+                .Bind<BallSpawner>()
                 .AsSingle();
         }
 
         void BindBallFactory() {
             Container
-                .BindFactory<float, Vector2, Ball, Ball.Factory>()
-                .FromComponentInNewPrefabResource(AssetPath.Ball)
-                .UnderTransform(BallRoot);
+                .BindFactory<int, Vector2, float, Sprite, Color, Ball, Ball.Factory>()
+                .FromMonoPoolableMemoryPool(x => x
+                    .WithInitialSize(10)
+                    .FromComponentInNewPrefabResource(AssetPath.Ball)
+                    .UnderTransform(BallRoot)
+                );
+        }
+
+        void BindBallsController() {
+            Container
+                .Bind<BallsController>()
+                .AsSingle();
         }
     }
 }

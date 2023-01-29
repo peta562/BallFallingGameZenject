@@ -1,4 +1,5 @@
 ﻿using System;
+using Game.Level.Balls;
 using Game.UI.Level;
 using Zenject;
 
@@ -13,15 +14,19 @@ namespace Game.Level {
         }
         
         public void Initialize() {
-            _ballsController.Initialize();
+            _ballsController.Initialize(OnBallOutOfBorders);
         }
 
         public void Tick() {
            _ballsController.Tick();
         }
 
+        void OnBallOutOfBorders(Ball ball) {
+            _ballsController.RemoveBall(ball);
+        }
+
         public void Dispose() {
-            
+            _ballsController.Dispose();
         }
     }
 }

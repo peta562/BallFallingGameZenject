@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: LevelConfig
   m_EditorClassIdentifier: 
   SpawnBallTime: 3
+  BallsSpeed: 5

@@ -1,30 +1,35 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Configs;
 using Core.Services.ConfigProvider;
 using Core.Services.TimerProvider;
 using UnityEngine;
 
-namespace Game.Level {
+namespace Game.Level.Balls {
     public sealed class BallsController {
-        readonly BallsSpawner _ballsSpawner;
+        readonly BallSpawner _ballSpawner;
         readonly ITimerProvider _timerProvider;
         readonly ScreenBordersProvider _screenBordersProvider;
         readonly LevelConfig _levelConfig;
 
-        List<Ball> _balls;
+        List<Ball> _activeBalls;
         Vector2 _screenBorders;
+        
+        Action<Ball> _onBallOutOfBorders;
 
-        public BallsController(BallsSpawner ballsSpawner, ITimerProvider timerProvider,
+        public BallsController(BallSpawner ballSpawner, ITimerProvider timerProvider,
             ScreenBordersProvider screenBordersProvider, IConfigProvider configProvider) {
-            _ballsSpawner = ballsSpawner;
+            _ballSpawner = ballSpawner;
             _timerProvider = timerProvider;
             _screenBordersProvider = screenBordersProvider;
 
             _levelConfig = configProvider.GetLevelConfig();
         }
 
-        public void Initialize() {
-            _balls = new List<Ball>();
+        public void Initialize(Action<Ball> onBallOutOfBorders) {
+            _onBallOutOfBorders = onBallOutOfBorders;
+            
+            _activeBalls = new List<Ball>();
 
             _screenBorders = _screenBordersProvider.GetScreenBorders();
 
@@ -33,22 +38,23 @@ namespace Game.Level {
         }
 
         public void Tick() {
-            for (var i = 0; i < _balls.Count; i++) {
-                _balls[i].Tick();
-                if ( _balls[i].CheckBallOutOfBorders(_screenBorders)) {
-                    RemoveBall(_balls[i]);
+            for (var i = 0; i < _activeBalls.Count; i++) {
+                _activeBalls[i].Move(Vector2.down, _levelConfig.BallsSpeed);
+                
+                if ( _activeBalls[i].CheckOutOfBorders(_screenBorders)) {
+                    _onBallOutOfBorders?.Invoke(_activeBalls[i]);
                 }
             }
         }
 
-        void OnBallSpawnTimerEnd() {
-            var ball = _ballsSpawner.SpawnBall(_screenBorders);
-            _balls.Add(ball);
+        public void RemoveBall(Ball ball) {
+            ball.Dispose();
+            _activeBalls.Remove(ball);
         }
 
-        void RemoveBall(Ball ball) {
-            ball.Destroy();
-            _balls.Remove(ball);
+        void OnBallSpawnTimerEnd() {
+            var ball = _ballSpawner.Create(_screenBorders);
+            _activeBalls.Add(ball);
         }
 
         public void Dispose() {
