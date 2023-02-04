@@ -1,5 +1,6 @@
 ﻿using System;
 using Core.Services.ConfigProvider;
+using Core.Services.InputService;
 using Core.Services.SaveDataHandler;
 using Core.Services.SaveLoadService;
 using Core.Services.TimerProvider;
@@ -24,6 +25,8 @@ namespace Core.Installers {
 
             BindTimerProvider();
             BindTimerFactory();
+
+            BindInputService();
 
             BindGameStateMachine();
         }
@@ -75,6 +78,21 @@ namespace Core.Installers {
         void BindTimerFactory() {
             Container
                 .BindFactory<float, Action, Action<int>, bool, Timer, Timer.Factory>();
+        }
+
+        void BindInputService() {
+            Container
+                .BindInterfacesAndSelfTo<IInputService>()
+                .FromMethod(CreateInputService);
+        }
+
+        IInputService CreateInputService(InjectContext context) {
+            if ( Application.isEditor ) {
+                return new StandaloneInputService();
+            }
+            else {
+                return new MobileInputService();
+            }
         }
 
         void BindGameStateMachine() {

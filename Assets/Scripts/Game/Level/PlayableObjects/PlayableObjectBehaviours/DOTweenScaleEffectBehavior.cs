@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace Game.Level.PlayableObjects.PlayableObjectBehaviours {
     public sealed class DOTweenScaleEffectBehavior : IEffectBehavior {
+        const float Duration = 0.5f;
+        const float Strength = 0.25f;
+        
         readonly Transform _transform;
 
         public DOTweenScaleEffectBehavior(Transform transform) {
@@ -11,7 +14,7 @@ namespace Game.Level.PlayableObjects.PlayableObjectBehaviours {
         }
 
         public void PlayEffect() {
-            _transform.DOShakeScale(0.5f, 0.25f)
+            _transform.DOShakeScale(Duration, Strength)
                 .OnComplete(() => _transform.DORewind())
                 .OnKill(() => _transform.DORewind());
         }

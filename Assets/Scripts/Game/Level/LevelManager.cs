@@ -1,14 +1,18 @@
 ﻿using System;
+using Core.Services.InputService;
 using Game.Level.Balls;
 using Game.UI.Level;
+using UnityEngine;
 using Zenject;
 
 namespace Game.Level {
     public sealed class LevelManager : IInitializable, ITickable, IDisposable {
+        readonly IInputService _inputService;
         readonly BallsController _ballsController;
         readonly HUD _hud;
         
-        public LevelManager(BallsController ballsController, HUD hud) {
+        public LevelManager(IInputService inputService, BallsController ballsController, HUD hud) {
+            _inputService = inputService;
             _ballsController = ballsController;
             _hud = hud;
         }
@@ -18,11 +22,20 @@ namespace Game.Level {
         }
 
         public void Tick() {
-           _ballsController.Tick();
+            if ( _inputService.GetInputClick() ) {
+                var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                var hit = Physics2D.Raycast(ray.origin, ray.direction);
+                if (hit.collider != null) {
+                    if ( hit.collider.TryGetComponent<Ball>(out var ball) ) {
+                        _ballsController.HandleClick(ball);
+                    }
+                }    
+            }
+            
+            _ballsController.Tick();
         }
 
-        void OnBallOutOfBorders(Ball ball) {
-            _ballsController.RemoveBall(ball);
+        void OnBallOutOfBorders() {
         }
 
         public void Dispose() {

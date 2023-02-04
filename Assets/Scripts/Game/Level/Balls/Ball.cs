@@ -6,6 +6,8 @@ using Zenject;
 
 namespace Game.Level.Balls {
     public sealed class Ball : MonoBehaviour, IPoolable<int, Vector2, float, Sprite, Color, IMemoryPool>, IDisposable {
+        [SerializeField] ParticleSystem DieParticleSystemPrefab;
+        
         Transform _transform;
         SpriteRenderer _spriteRenderer;
         float _scale;
@@ -59,6 +61,16 @@ namespace Game.Level.Balls {
 
         public bool CheckOutOfBorders(Vector2 screenBorders) {
             return _outOfBordersBehavior.CheckOutOfBorders(screenBorders);
+        }
+
+        public void PlayHitEffect() {
+            _hitEffectBehavior.PlayEffect();
+        }
+
+        public void PlayDieEffect() {
+            var particleEffect =
+                Instantiate(DieParticleSystemPrefab, transform.position, Quaternion.identity, transform);
+            _dieParticleEffectBehavior.PlayEffect(particleEffect);
         }
 
         public void SetView() {

@@ -9,10 +9,11 @@ namespace Game.Level.Balls {
 
         public BallSpawner(Ball.Factory ballFactory, IConfigProvider configProvider) {
             _ballFactory = ballFactory;
+            
             _ballConfig = configProvider.GetBallConfig();
         }
 
-        public Ball Create(Vector2 screenBorders) {
+        public Ball Spawn(Vector2 screenBorders) {
             var ballScale = _ballConfig.Scale;
             var spawnPosition = CalculateSpawnPosition(screenBorders, ballScale);
 

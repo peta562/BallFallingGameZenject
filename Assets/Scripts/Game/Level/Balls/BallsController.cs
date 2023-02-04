@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Configs;
 using Core.Services.ConfigProvider;
+using Core.Services.InputService;
 using Core.Services.TimerProvider;
 using UnityEngine;
 
@@ -15,9 +16,9 @@ namespace Game.Level.Balls {
         List<Ball> _activeBalls;
         Vector2 _screenBorders;
         
-        Action<Ball> _onBallOutOfBorders;
+        Action _onBallOutOfBorders;
 
-        public BallsController(BallSpawner ballSpawner, ITimerProvider timerProvider,
+        public BallsController( BallSpawner ballSpawner, ITimerProvider timerProvider,
             ScreenBordersProvider screenBordersProvider, IConfigProvider configProvider) {
             _ballSpawner = ballSpawner;
             _timerProvider = timerProvider;
@@ -26,9 +27,9 @@ namespace Game.Level.Balls {
             _levelConfig = configProvider.GetLevelConfig();
         }
 
-        public void Initialize(Action<Ball> onBallOutOfBorders) {
+        public void Initialize(Action onBallOutOfBorders) {
             _onBallOutOfBorders = onBallOutOfBorders;
-            
+
             _activeBalls = new List<Ball>();
 
             _screenBorders = _screenBordersProvider.GetScreenBorders();
@@ -42,7 +43,8 @@ namespace Game.Level.Balls {
                 _activeBalls[i].Move(Vector2.down, _levelConfig.BallsSpeed);
                 
                 if ( _activeBalls[i].CheckOutOfBorders(_screenBorders)) {
-                    _onBallOutOfBorders?.Invoke(_activeBalls[i]);
+                    _onBallOutOfBorders?.Invoke();
+                    RemoveBall(_activeBalls[i]);
                 }
             }
         }
@@ -52,8 +54,21 @@ namespace Game.Level.Balls {
             _activeBalls.Remove(ball);
         }
 
+        public void HandleClick(Ball ball) {
+            ball.TakeDamage(5);
+            ball.PlayHitEffect();
+            if ( ball.Health <= 0 ) {
+                KillBall(ball);
+            }
+        }
+
+        void KillBall(Ball ball) {
+            ball.PlayDieEffect();
+            RemoveBall(ball);
+        }
+
         void OnBallSpawnTimerEnd() {
-            var ball = _ballSpawner.Create(_screenBorders);
+            var ball = _ballSpawner.Spawn(_screenBorders);
             _activeBalls.Add(ball);
         }
 
