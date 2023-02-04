@@ -1,6 +1,8 @@
 ﻿using System;
 using Core.Services.ConfigProvider;
 using Core.Services.InputService;
+using Core.Services.LevelSettingsProvider;
+using Core.Services.ProgressController;
 using Core.Services.SaveDataHandler;
 using Core.Services.SaveLoadService;
 using Core.Services.TimerProvider;
@@ -27,6 +29,9 @@ namespace Core.Installers {
             BindTimerFactory();
 
             BindInputService();
+
+            BindProgressController();
+            BindLevelSettingsProvider();
 
             BindGameStateMachine();
         }
@@ -93,6 +98,18 @@ namespace Core.Installers {
             else {
                 return new MobileInputService();
             }
+        }
+
+        void BindProgressController() {
+            Container
+                .BindInterfacesAndSelfTo<ProgressController>()
+                .AsSingle();
+        }
+
+        void BindLevelSettingsProvider() {
+            Container
+                .BindInterfacesAndSelfTo<LevelSettingsProvider>()
+                .AsSingle();
         }
 
         void BindGameStateMachine() {

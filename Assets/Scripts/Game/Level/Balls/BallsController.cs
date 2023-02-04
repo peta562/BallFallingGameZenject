@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Configs;
-using Core.Services.ConfigProvider;
-using Core.Services.InputService;
+using Core.Services.LevelSettingsProvider;
 using Core.Services.TimerProvider;
 using UnityEngine;
 
@@ -11,7 +9,8 @@ namespace Game.Level.Balls {
         readonly BallSpawner _ballSpawner;
         readonly ITimerProvider _timerProvider;
         readonly ScreenBordersProvider _screenBordersProvider;
-        readonly LevelConfig _levelConfig;
+        readonly BallSettings _ballSettings;
+        readonly CommonSettings _commonSettings;
 
         List<Ball> _activeBalls;
         Vector2 _screenBorders;
@@ -19,12 +18,13 @@ namespace Game.Level.Balls {
         Action _onBallOutOfBorders;
 
         public BallsController( BallSpawner ballSpawner, ITimerProvider timerProvider,
-            ScreenBordersProvider screenBordersProvider, IConfigProvider configProvider) {
+            ScreenBordersProvider screenBordersProvider, ILevelSettingsProvider levelSettingsProvider) {
             _ballSpawner = ballSpawner;
             _timerProvider = timerProvider;
             _screenBordersProvider = screenBordersProvider;
 
-            _levelConfig = configProvider.GetLevelConfig();
+            _ballSettings = levelSettingsProvider.LevelSettings.BallSettings;
+            _commonSettings = levelSettingsProvider.LevelSettings.CommonSettings;
         }
 
         public void Initialize(Action onBallOutOfBorders) {
@@ -34,13 +34,13 @@ namespace Game.Level.Balls {
 
             _screenBorders = _screenBordersProvider.GetScreenBorders();
 
-            _timerProvider.CreateTimer("BallSpawnTimer", _levelConfig.SpawnBallTime, OnBallSpawnTimerEnd, null, true);
+            _timerProvider.CreateTimer("BallSpawnTimer", _ballSettings.SpawnTime, OnBallSpawnTimerEnd, null, true);
             _timerProvider.StartTimer("BallSpawnTimer");
         }
 
         public void Tick() {
             for (var i = 0; i < _activeBalls.Count; i++) {
-                _activeBalls[i].Move(Vector2.down, _levelConfig.BallsSpeed);
+                _activeBalls[i].Move(Vector2.down, _ballSettings.Speed);
                 
                 if ( _activeBalls[i].CheckOutOfBorders(_screenBorders)) {
                     _onBallOutOfBorders?.Invoke();
@@ -55,7 +55,7 @@ namespace Game.Level.Balls {
         }
 
         public void HandleClick(Ball ball) {
-            ball.TakeDamage(5);
+            ball.TakeDamage(_commonSettings.Damage);
             ball.PlayHitEffect();
             if ( ball.Health <= 0 ) {
                 KillBall(ball);

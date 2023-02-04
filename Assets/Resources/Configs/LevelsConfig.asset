@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61d25d16769f44189386a7561aa903d0, type: 3}
+  m_Name: LevelsConfig
+  m_EditorClassIdentifier: 
+  Levels:
+  - Id: 0
+    Lives: 3
+    Damage: 1
+    SpawnBallTime: 5
+    BallSpeed: 5
+    BallSprite: {fileID: -2413806693520163455, guid: 155f4c3a0200cfc4ea21e53fe61771a6, type: 3}
+    BallScale: 0
+    BallHealthType: 1
+    BallHealthConst: 3
+    BallHealthMin: 3
+    BallHealthMax: 6
+  - Id: 1
+    Lives: 3
+    Damage: 1
+    SpawnBallTime: 4
+    BallSpeed: 5
+    BallSprite: {fileID: -2413806693520163455, guid: 155f4c3a0200cfc4ea21e53fe61771a6, type: 3}
+    BallScale: 0
+    BallHealthType: 0
+    BallHealthConst: 5
+    BallHealthMin: 3
+    BallHealthMax: 6

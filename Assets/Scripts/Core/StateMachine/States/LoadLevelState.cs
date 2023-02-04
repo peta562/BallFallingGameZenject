@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Core.Services.ProgressController;
+using UnityEngine;
 using Zenject;
 
 namespace Core.StateMachine.States {
@@ -6,19 +7,23 @@ namespace Core.StateMachine.States {
         readonly GameStateMachine _stateMachine;
         readonly SceneLoader _sceneLoader;
         readonly LoadingScreen _loadingScreen;
+        readonly IProgressController _progressController;
 
-        public LoadLevelState(GameStateMachine stateMachine, SceneLoader sceneLoader, LoadingScreen loadingScreen) {
+        public LoadLevelState(GameStateMachine stateMachine, SceneLoader sceneLoader, LoadingScreen loadingScreen,
+            IProgressController progressController) {
             Debug.Log("LoadLevelState constructor");
-            
+
             _stateMachine = stateMachine;
             _sceneLoader = sceneLoader;
             _loadingScreen = loadingScreen;
+            _progressController = progressController;
         }
-        
+
         public void Enter(SceneName sceneName) {
             Debug.Log("LoadLevelState enter");
             
             _loadingScreen.Show();
+            _progressController.StartNextLevel();
             _sceneLoader.Load(sceneName, OnLoaded);
         }
 
@@ -28,6 +33,7 @@ namespace Core.StateMachine.States {
 
         void OnLoaded() {
             _loadingScreen.Hide();
+            _stateMachine.Enter<LevelLoopState>();
         }
 
         public class Factory : PlaceholderFactory<GameStateMachine, LoadLevelState> {

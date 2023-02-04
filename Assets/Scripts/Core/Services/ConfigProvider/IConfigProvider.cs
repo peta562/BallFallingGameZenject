@@ -2,9 +2,8 @@
 
 namespace Core.Services.ConfigProvider {
     public interface IConfigProvider {
-        public LevelConfig GetLevelConfig();
-        public BallConfig GetBallConfig();
-        
+        public LevelsConfig GetLevelsConfig();
+
         public void LoadConfigs();
     }
 }

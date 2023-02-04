@@ -69,7 +69,7 @@ namespace Game.Level.Balls {
 
         public void PlayDieEffect() {
             var particleEffect =
-                Instantiate(DieParticleSystemPrefab, transform.position, Quaternion.identity, transform);
+                Instantiate(DieParticleSystemPrefab, transform.position, Quaternion.identity);
             _dieParticleEffectBehavior.PlayEffect(particleEffect);
         }
 

@@ -3,19 +3,14 @@ using UnityEngine;
 
 namespace Core.Services.ConfigProvider {
     public sealed class ConfigProvider : IConfigProvider {
-        const string LevelConfigPath = "Configs/LevelConfig";
-        const string BallConfigPath = "Configs/BallConfig";
-        
-        LevelConfig _levelConfig;
-        BallConfig _ballConfig;
+        const string LevelsConfigPath = "Configs/LevelsConfig";
+
+        LevelsConfig _levelsConfig;
 
         public void LoadConfigs() {
-            _levelConfig = Resources.Load<LevelConfig>(LevelConfigPath);
-            _ballConfig = Resources.Load<BallConfig>(BallConfigPath);
+            _levelsConfig = Resources.Load<LevelsConfig>(LevelsConfigPath);
         }
 
-        public BallConfig GetBallConfig() => _ballConfig;
-
-        public LevelConfig GetLevelConfig() => _levelConfig;
+        public LevelsConfig GetLevelsConfig() => _levelsConfig;
     }
 }

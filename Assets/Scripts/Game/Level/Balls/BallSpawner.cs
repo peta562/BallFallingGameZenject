@@ -1,24 +1,23 @@
-﻿using Configs;
-using Core.Services.ConfigProvider;
+﻿using Core.Services.LevelSettingsProvider;
 using UnityEngine;
 
 namespace Game.Level.Balls {
     public sealed class BallSpawner {
         readonly Ball.Factory _ballFactory;
-        readonly BallConfig _ballConfig;
+        readonly BallSettings _ballSettings;
 
-        public BallSpawner(Ball.Factory ballFactory, IConfigProvider configProvider) {
+        public BallSpawner(Ball.Factory ballFactory, ILevelSettingsProvider levelSettingsProvider) {
             _ballFactory = ballFactory;
-            
-            _ballConfig = configProvider.GetBallConfig();
+
+            _ballSettings = levelSettingsProvider.LevelSettings.BallSettings;
         }
 
         public Ball Spawn(Vector2 screenBorders) {
-            var ballScale = _ballConfig.Scale;
+            var ballScale = _ballSettings.Scale;
             var spawnPosition = CalculateSpawnPosition(screenBorders, ballScale);
 
-            var ball = _ballFactory.Create(_ballConfig.Health, spawnPosition, ballScale,
-                _ballConfig.Sprite, Color.red);
+            var ball = _ballFactory.Create(_ballSettings.Health, spawnPosition, ballScale,
+                _ballSettings.Sprite, Color.red);
             ball.SetView();
 
             return ball;
